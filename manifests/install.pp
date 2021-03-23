@@ -17,12 +17,12 @@ class podman::install (
   String $podman_pkg                  = $podman::podman_pkg,
   String $skopeo_pkg                  = $podman::skopeo_pkg,
   String $buildah_pkg                 = $podman::buildah_pkg,
-  String $podman_docker_pkg = $podman::podman_docker_pkg,
+  Optional[String] $podman_docker_pkg = $podman::podman_docker_pkg,
 ){
   ensure_resource('Package', $podman_pkg, { 'ensure' => 'installed' })
   ensure_resource('Package', $skopeo_pkg, { 'ensure' => 'installed' })
   ensure_resource('Package', $buildah_pkg, { 'ensure' => 'installed' })
-  if $podman::manage_podman_docker { ensure_resource('Package', $podman_docker_pkg, { 'ensure' => 'installed' }) }
+  if $podman_docker_pkg { ensure_resource('Package', $podman_docker_pkg, { 'ensure' => 'installed' }) }
 
   if $podman::manage_subuid {
     Concat { '/etc/subuid':
